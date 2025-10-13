@@ -3,7 +3,7 @@ import 'hello_world.dart';
 import 'calculator.dart';
 import 'todo.dart';
 import 'weather.dart';
-// import 'photo_viewer.dart';
+import 'photo_viewer.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,7 +38,7 @@ class _MainPageState extends State<MainPage> {
     CalculatorPage(),
     TodoPage(),
     WeatherPage(),
-    // PhotoViewerPage(),
+    PhotoViewerPage()
   ];
 
   @override
