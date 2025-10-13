@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'hello_world.dart';
 import 'calculator.dart';
 import 'todo.dart';
-// import 'weather.dart';
+import 'weather.dart';
 // import 'photo_viewer.dart';
 
 void main() {
@@ -37,7 +37,7 @@ class _MainPageState extends State<MainPage> {
     HelloWorldPage(),
     CalculatorPage(),
     TodoPage(),
-    // WeatherPage(),
+    WeatherPage(),
     // PhotoViewerPage(),
   ];
 
