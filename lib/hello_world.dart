@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class HelloWorldPage extends StatefulWidget {
+  const HelloWorldPage({super.key});
+
   @override
   _HelloWorldPageState createState() => _HelloWorldPageState();
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'hello_world.dart';
 import 'calculator.dart';
-// import 'todo.dart';
+import 'todo.dart';
 // import 'weather.dart';
 // import 'photo_viewer.dart';
 
@@ -36,7 +36,7 @@ class _MainPageState extends State<MainPage> {
   final List<Widget> _pages = [
     HelloWorldPage(),
     CalculatorPage(),
-    // TodoPage(),
+    TodoPage(),
     // WeatherPage(),
     // PhotoViewerPage(),
   ];
