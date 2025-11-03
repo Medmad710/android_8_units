@@ -1,67 +1,35 @@
 import 'package:flutter/material.dart';
-import 'hello_world.dart';
-import 'calculator.dart';
-import 'todo.dart';
-import 'weather.dart';
-import 'photo_viewer.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MyFirstApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class MyFirstApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Multi App',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: MainPage(),
-    );
-  }
-}
-
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
-
-  @override
-  _MainPageState createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  int _currentIndex = 0;
-
-  final List<Widget> _pages = [
-    HelloWorldPage(),
-    CalculatorPage(),
-    TodoPage(),
-    WeatherPage(),
-    PhotoViewerPage()
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.code), label: 'Hello'),
-          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calc'),
-          BottomNavigationBarItem(icon: Icon(Icons.check_box), label: 'ToDo'),
-          BottomNavigationBarItem(icon: Icon(Icons.cloud), label: 'Weather'),
-          BottomNavigationBarItem(icon: Icon(Icons.photo), label: 'Photos'),
-        ],
+    return  MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text('Unit 1 App'),
+          backgroundColor: Colors.blueAccent,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('My first Android app with Flutter',
+                  style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black87)
+              ),
+              SizedBox(height:20),
+              Image.network(
+                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                width:200,
+                height:200,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
