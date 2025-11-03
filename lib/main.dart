@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyFirstApp());
+void main(){
+  runApp(MySecondApp());
 }
 
-class MyFirstApp extends StatelessWidget {
+class MySecondApp extends StatefulWidget{
   @override
-  Widget build(BuildContext context) {
-    return  MaterialApp(
+  _MySecondAppState createState()=>_MySecondAppState();
+}
+
+class _MySecondAppState extends State<MySecondApp>{
+  int counter=0;
+
+  @override
+  Widget build(BuildContext context){
+    return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text('Unit 1 App'),
-          backgroundColor: Colors.blueAccent,
-        ),
+        appBar: AppBar(title:Text('Unit 2 App')),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('My first Android app with Flutter',
-                  style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black87)
+            children:[
+              Text('Button pressed $counter times',
+                style: TextStyle(fontSize:20,fontWeight:FontWeight.w600)
               ),
-              SizedBox(height:20),
-              Image.network(
-                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                width:200,
-                height:200,
+              SizedBox(height:25),
+              ElevatedButton(
+                onPressed: (){
+                  setState(() {
+                    counter++;
+                  });
+                },
+                child:Text('Press me'),
               ),
             ],
           ),
