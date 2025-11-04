@@ -1,61 +1,62 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  int counter = 0;
-  Timer? timer;
-
-  @override
-  void initState() {
-    super.initState();
-    // Запускаем фоновую задачу: каждую секунду увеличиваем счётчик
-    timer = Timer.periodic(const Duration(seconds: 1), (t) {
-      setState(() => counter++);
-    });
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.indigo),
-      home: Scaffold(
-        appBar: AppBar(title: const Text("Unit 7 – Background Timer")),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Background task simulation",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 20),
-              Text(
-                "Seconds passed: $counter",
-                style: const TextStyle(fontSize: 26, color: Colors.blueAccent),
-              ),
-              const SizedBox(height: 40),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() => counter = 0);
-                },
-                child: const Text("🔁 Reset"),
-              ),
-            ],
+      title: 'Unit 8 — Compose & Views',
+      theme: ThemeData(primarySwatch: Colors.teal),
+      home: const NativeViewScreen(),
+    );
+  }
+}
+
+class NativeViewScreen extends StatefulWidget {
+  const NativeViewScreen({super.key});
+
+  @override
+  State<NativeViewScreen> createState() => _NativeViewScreenState();
+}
+
+class _NativeViewScreenState extends State<NativeViewScreen> {
+  static const String viewType = 'native-text-view';
+  static const platform = MethodChannel('native_channel');
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Unit 8 — Flutter + Android View')),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            "Flutter area above 👇",
+            style: TextStyle(fontSize: 18),
           ),
-        ),
+          const SizedBox(height: 10),
+
+          // Вот тут мы встраиваем Android TextView
+          SizedBox(
+            height: 100,
+            child: AndroidView(
+              viewType: viewType,
+              onPlatformViewCreated: (id) {
+                print("✅ Native Android View attached");
+              },
+            ),
+          ),
+
+          const SizedBox(height: 10),
+          const Text(
+            "Flutter continues below 👆",
+            style: TextStyle(fontSize: 18),
+          ),
+        ],
       ),
     );
   }
