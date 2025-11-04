@@ -1,79 +1,61 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-void main(){
-  runApp(MySixthApp());
+void main() {
+  runApp(MyApp());
 }
 
-class MySixthApp extends StatefulWidget{
+class MyApp extends StatefulWidget {
   @override
-  _MySixthAppState createState()=>_MySixthAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _MySixthAppState extends State<MySixthApp>{
+class _MyAppState extends State<MyApp> {
   int counter = 0;
-  late SharedPreferences prefs;
-  bool loading = true;
+  Timer? timer;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    loadCounter();
-  }
-
-  Future<void> loadCounter() async{
-    prefs = await SharedPreferences.getInstance();
-    setState(() {
-      counter = prefs.getInt('counter') ?? 0;
-      loading = false;
+    // Запускаем фоновую задачу: каждую секунду увеличиваем счётчик
+    timer = Timer.periodic(const Duration(seconds: 1), (t) {
+      setState(() => counter++);
     });
-  }
-
-  Future<void> increment() async{
-    setState(() {
-      counter++;
-    });
-    await prefs.setInt('counter', counter);
-  }
-
-  Future<void> reset() async{
-    setState(() {
-      counter = 0;
-    });
-    await prefs.setInt('counter', counter);
   }
 
   @override
-  Widget build(BuildContext context){
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.orange),
+      theme: ThemeData(primarySwatch: Colors.indigo),
       home: Scaffold(
-        appBar: AppBar(title: Text('Unit 6 - Data Persistence')),
-        body: loading
-          ? Center(child:CircularProgressIndicator())
-          : Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:[
-                Text('Saved counter value:',
-                    style:TextStyle(fontSize:18,fontWeight:FontWeight.w500)),
-                SizedBox(height:10),
-                Text('$counter',
-                    style:TextStyle(fontSize:36,fontWeight:FontWeight.bold)),
-                SizedBox(height:30),
-                ElevatedButton(
-                  onPressed: increment,
-                  child: Text('Add +1'),
-                ),
-                SizedBox(height:10),
-                ElevatedButton(
-                  onPressed: reset,
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  child: Text('Reset'),
-                ),
-              ],
-            ),
+        appBar: AppBar(title: const Text("Unit 7 – Background Timer")),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Background task simulation",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
+              Text(
+                "Seconds passed: $counter",
+                style: const TextStyle(fontSize: 26, color: Colors.blueAccent),
+              ),
+              const SizedBox(height: 40),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() => counter = 0);
+                },
+                child: const Text("🔁 Reset"),
+              ),
+            ],
           ),
+        ),
       ),
     );
   }
