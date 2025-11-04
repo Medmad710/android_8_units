@@ -1,40 +1,38 @@
 import 'package:flutter/material.dart';
 
 void main(){
-  runApp(MySecondApp());
+  runApp(MyThirdApp());
 }
 
-class MySecondApp extends StatefulWidget{
-  @override
-  _MySecondAppState createState()=>_MySecondAppState();
-}
+class MyThirdApp extends StatelessWidget{
 
-class _MySecondAppState extends State<MySecondApp>{
-  int counter=0;
+  final List<String> planets = [
+    'Mercury','Venus','Earth','Mars','Jupiter','Saturn','Uranus','Neptune'
+  ];
 
   @override
   Widget build(BuildContext context){
     return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        textTheme: TextTheme(
+          bodyMedium: TextStyle(fontSize:18,color:Colors.black87)
+        ),
+      ),
       home: Scaffold(
-        appBar: AppBar(title:Text('Unit 2 App')),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children:[
-              Text('Button pressed $counter times',
-                style: TextStyle(fontSize:20,fontWeight:FontWeight.w600)
+        appBar: AppBar(title:Text('Unit 3 - Planets List')),
+        body: ListView.builder(
+          itemCount: planets.length,
+          itemBuilder: (context,index){
+            return Card(
+              margin: EdgeInsets.symmetric(vertical:8,horizontal:16),
+              child: ListTile(
+                leading: Icon(Icons.public,color:Colors.deepPurple),
+                title: Text(planets[index]),
+                subtitle: Text('Planet number ${index+1}'),
               ),
-              SizedBox(height:25),
-              ElevatedButton(
-                onPressed: (){
-                  setState(() {
-                    counter++;
-                  });
-                },
-                child:Text('Press me'),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
