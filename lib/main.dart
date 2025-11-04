@@ -1,72 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main(){
-  runApp(MyFifthApp());
+  runApp(MySixthApp());
 }
 
-class MyFifthApp extends StatefulWidget{
+class MySixthApp extends StatefulWidget{
   @override
-  _MyFifthAppState createState()=>_MyFifthAppState();
+  _MySixthAppState createState()=>_MySixthAppState();
 }
 
-class _MyFifthAppState extends State<MyFifthApp>{
-  List photos = [];
+class _MySixthAppState extends State<MySixthApp>{
+  int counter = 0;
+  late SharedPreferences prefs;
   bool loading = true;
 
   @override
   void initState(){
     super.initState();
-    fetchData();
+    loadCounter();
   }
 
-  Future<void> fetchData() async{
-    final url = Uri.parse('https://picsum.photos/v2/list?limit=10');
-    try{
-      final response = await http.get(url);
-      if(response.statusCode==200){
-        setState(() {
-          photos = json.decode(response.body);
-          loading = false;
-        });
-      } else {
-        print('Error: ${response.statusCode}');
-      }
-    } catch(e){
-      print('Failed to fetch data: $e');
-    }
+  Future<void> loadCounter() async{
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      counter = prefs.getInt('counter') ?? 0;
+      loading = false;
+    });
+  }
+
+  Future<void> increment() async{
+    setState(() {
+      counter++;
+    });
+    await prefs.setInt('counter', counter);
+  }
+
+  Future<void> reset() async{
+    setState(() {
+      counter = 0;
+    });
+    await prefs.setInt('counter', counter);
   }
 
   @override
   Widget build(BuildContext context){
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.teal),
+      theme: ThemeData(primarySwatch: Colors.orange),
       home: Scaffold(
-        appBar: AppBar(title:Text('Unit 5 - API and Internet')),
+        appBar: AppBar(title: Text('Unit 6 - Data Persistence')),
         body: loading
           ? Center(child:CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: photos.length,
-              itemBuilder:(context,index){
-                final p = photos[index];
-                return Card(
-                  margin: EdgeInsets.symmetric(vertical:8,horizontal:12),
-                  child: ListTile(
-                    leading: Image.network(
-                      p['download_url'],
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          Icon(Icons.broken_image, color: Colors.grey),
-                    ),
-                    title: Text(p['author'] ?? 'Unknown'),
-                    subtitle: Text('Photo #${index+1}'),
-                  ),
-                );
-              },
+          : Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:[
+                Text('Saved counter value:',
+                    style:TextStyle(fontSize:18,fontWeight:FontWeight.w500)),
+                SizedBox(height:10),
+                Text('$counter',
+                    style:TextStyle(fontSize:36,fontWeight:FontWeight.bold)),
+                SizedBox(height:30),
+                ElevatedButton(
+                  onPressed: increment,
+                  child: Text('Add +1'),
+                ),
+                SizedBox(height:10),
+                ElevatedButton(
+                  onPressed: reset,
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  child: Text('Reset'),
+                ),
+              ],
             ),
+          ),
       ),
     );
   }
